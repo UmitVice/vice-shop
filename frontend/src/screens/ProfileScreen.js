@@ -3,7 +3,6 @@ import { Table, Form, Button, Row, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
@@ -64,7 +63,7 @@ const ProfileScreen = ({ location, history }) => {
           <Form.Group controlId='name'>
             <Form.Label>Name</Form.Label>
             <Form.Control
-              type='Name'
+              type='name'
               placeholder='Enter name'
               value={name}
               onChange={(e) => setName(e.target.value)}
