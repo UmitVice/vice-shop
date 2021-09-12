@@ -65,7 +65,7 @@ const OrderScreen = ({ match, history }) => {
      dispatch(payOrder(orderId, paymentResult))
   }
 
-  return loading ? <Loader /> : error? <Message variant='danger'>{error}
+  return loading ? <s /> : error? <Message variant='danger'>{error}
   </Message> : <>
       <h1>Order {order._id} </h1>
             <Row>

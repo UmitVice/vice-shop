@@ -34,7 +34,7 @@ const ProductScreen = ({ history, match }) => {
         Go Back
       </Link>
       {loading ? (
-        <Loader /> 
+        <s/> 
       ) : error ? ( 
         <Message variant='danger'>{error}</Message> 
       ) : (
