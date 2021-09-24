@@ -2,7 +2,7 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav, Container, NavDropdown, Dropdown } from 'react-bootstrap'
 import SearchBox from './SearchBox'
 import { logout } from '../actions/userActions'
 
@@ -59,6 +59,23 @@ const Header = () => {
             </Navbar.Collapse>
           </Container>
         </Navbar>
+        
+  <Nav className="justify-content-center" activeKey="/home">
+    <Nav.Item>
+      <Nav.Link href="/home">Active</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link eventKey="link-1">Link</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link eventKey="link-2">Link</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link eventKey="disabled" disabled>
+        Disabled
+      </Nav.Link>
+    </Nav.Item>
+  </Nav>
     </header>
   )
 }

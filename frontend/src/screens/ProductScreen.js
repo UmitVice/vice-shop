@@ -8,7 +8,6 @@ import { listProductDetails, createProductReview } from '../actions/productActio
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import Meta from '../components/Meta'
 
-
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)
   const [rating, setRating] = useState(0)
@@ -78,6 +77,7 @@ const ProductScreen = ({ history, match }) => {
                       <ListGroup.Item>
                           Price: ${product.price}
                       </ListGroup.Item>
+ 
                       <ListGroup.Item>
                           Description: {product.description}
                       </ListGroup.Item>

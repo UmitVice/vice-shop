@@ -13,6 +13,12 @@ const PlaceOrderScreen = ({ history }) => {
 
   const cart = useSelector((state) => state.cart)
 
+  if (!cart.shippingAddress.address) {
+    history.push('/shipping')
+  } else if (!cart.paymentMethod) {
+    history.push('/payment')
+  }
+
   // Calculate prices
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
@@ -59,8 +65,9 @@ const PlaceOrderScreen = ({ history }) => {
                           <h2>Shipping</h2>
                           <p>
                               <strong>Address:</strong>
-                              {cart.shippingAddress.address}, {cart.shippingAddress.city}{''}
-                              {cart.shippingAddress.postalCode},{''}
+                              {cart.shippingAddress.address},<br/> 
+                              {cart.shippingAddress.city},<br/> 
+                              {cart.shippingAddress.postalCode},<br/>
                               {cart.shippingAddress.country}
                           </p>
                       </ListGroup.Item>
