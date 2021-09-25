@@ -1,39 +1,50 @@
-import path from 'path'
-import express from 'express'
-import multer from 'multer'
-import { protect, admin } from '../middleware/authMiddleware.js'
-const router = express.Router()
+require('dotenv').config();
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 
-const storage = multer.diskStorage({
-    destination(req, file, cb) {
-        cb(null, 'uploads/')
-    },
-    filename(req, file, cb) {
-      cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
+const s3Config = new AWS.S3({
+    accessKeyId: process.env.AWS_IAM_USER_KEY,
+    secretAccessKey: process.env.AWS_IAM_USER_SECRET,
+    Bucket: process.env.AWS_BUCKET_NAME
+  });
 
-function checkFileType(file, cb) {
-    const filetypes = /jpg|jpeg|png/
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
-    const mimetype = filetypes.test(file.mimetype)
-
-    if(extname && mimetype) {
-        return cb(null, true)  
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true)
     } else {
-        cb('Images only!')
+        cb(null, false)
     }
 }
 
-const upload = multer({
-    storage,
-    fileFilter: function(req, file, cb) {
-        checkFileType(file, cb)
+// this is just to test locally if multer is working fine.
+const storage = multer.diskStorage({
+    destination: (req, res, cb) => {
+        cb(null, 'src/api/media/profiles')
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname)
     }
 })
 
-router.post('/',protect, admin, upload.single('image'), (req, res) => {
-    res.send(`/${req.file.path}`)
-  })
+const multerS3Config = multerS3({
+    s3: s3Config,
+    bucket: process.env.AWS_BUCKET_NAME,
+    metadata: function (req, file, cb) {
+        cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+        console.log(file)
+        cb(null, new Date().toISOString() + '-' + file.originalname)
+    }
+});
 
-export default router
+const upload = multer({
+    storage: multerS3Config,
+    fileFilter: fileFilter,
+    limits: {
+        fileSize: 1024 * 1024 * 5 // we are allowing only 5 MB files
+    }
+})
+
+export default uploadRoutes
